@@ -1,0 +1,9 @@
+pub mod muscle_group_routes;
+pub mod plan_workout_routes;
+pub mod user_profile_routes;
+pub mod users_routes;
+pub mod workout_plan_routes;
+pub mod workout_routes;
+pub mod exercise_routes;
+pub mod user_roles;
+pub mod role_routes;

@@ -1,0 +1,9 @@
+pub mod muscle_groups;
+pub mod plan_workout;
+pub mod user_profile;
+pub mod users;
+pub mod workout;
+pub mod workout_plan;
+pub mod exercise;
+pub mod roles;
+pub mod user_roles;

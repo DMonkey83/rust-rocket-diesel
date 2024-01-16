@@ -1,0 +1,19 @@
+[package]
+name = "workouts"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rocket = {version = "0.5.0-rc.1", features = ["json"]}
+rocket_db_pools = {version = "0.1", features = ["diesel_postgres"]}
+chrono = {version ="0.4.31", features = ["serde"]}
+diesel = { version = "2.1.4", features = ["postgres", "chrono"] }
+diesel-async = {version ="0.4.1", features = ["postgres"]}
+diesel-derive-enum = { version = "2.1.0", features = ["postgres"] }
+serde = "1.0.195"
+dotenvy = "0.15.7"
+
+[dev-dependencies]
+reqwest = { version = "0.11.4", features = ["json", "blocking"] }

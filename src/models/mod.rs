@@ -1,0 +1,10 @@
+pub mod enums_types;
+pub mod exercise;
+pub mod muscle_group;
+pub mod plan_workout;
+pub mod roles;
+pub mod user_profile;
+pub mod user_roles;
+pub mod users;
+pub mod workout;
+pub mod workout_plan;
