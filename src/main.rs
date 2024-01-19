@@ -14,18 +14,23 @@ use routes::{
         create_workout_plan, delete_workout_plan, get_workout_plan, update_workout_plan,
     },
     workout_routes::{create_workout, delete_workout, get_workout, list_workouts, update_workout}, exercise_routes::{list_exercises, find_exercise, create_exercise, update_exercise, delete_exercise},
-    role_routes::{get_role, list_roles, create_role, update_role, delete_role},
+    role_routes::{get_role, list_roles, create_role, update_role, delete_role}, authorization::login,
 };
 
+mod auth;
 mod models;
 mod repositories;
 mod routes;
 mod schema;
 
-use rocket_db_pools::Database;
+use rocket_db_pools::{Database, diesel, deadpool_redis};
 #[derive(Database)]
 #[database("postgres")]
-pub struct DbConn(rocket_db_pools::diesel::PgPool);
+pub struct DbConn(diesel::PgPool);
+
+#[derive(Database)]
+#[database("redis")]
+pub struct CacheConn(deadpool_redis::Pool);
 
 #[rocket::main]
 async fn main() {
@@ -33,6 +38,7 @@ async fn main() {
         .mount(
             "/",
             rocket::routes![
+                login,
                 get_user,
                 create_user,
                 delete_user,
@@ -69,6 +75,7 @@ async fn main() {
                 delete_role
             ],
         )
+        .attach(CacheConn::init())
         .attach(DbConn::init())
         .launch()
         .await;

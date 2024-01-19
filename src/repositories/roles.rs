@@ -13,8 +13,8 @@ impl RoleRepository {
         roles::table.get_results(c).await
     }
 
-    pub async fn find(c: &mut AsyncPgConnection, id: &i64) -> QueryResult<Role> {
-        roles::table.find(id).get_result(c).await
+    pub async fn find_by_code(c: &mut AsyncPgConnection, code: String) -> QueryResult<Role> {
+        roles::table.filter(roles::code.eq(code)).first(c).await
     }
 
     pub async fn create(c: &mut AsyncPgConnection, new_role: NewRole) -> QueryResult<Role> {

@@ -14,7 +14,7 @@ pub struct UserRole {
 
 #[derive(Insertable, Deserialize)]
 #[diesel(table_name = user_roles)]
-pub struct NewRole {
+pub struct NewUserRole {
     pub user_username: String,
     pub role_id: i64,
 }

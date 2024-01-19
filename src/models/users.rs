@@ -12,9 +12,15 @@ pub struct User {
     pub created_at: NaiveDateTime,
 }
 
-#[derive(Insertable, Deserialize)]
+#[derive(Insertable,Clone, Serialize, Deserialize)]
 #[diesel(table_name = users)]
 pub struct NewUser {
     pub username: String,
     pub password_hash: String,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct NewUserData {
+    pub new_user: NewUser,
+    pub role_codes: Vec<String>,
 }

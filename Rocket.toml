@@ -1,2 +1,0 @@
-[default.databases.postgres]
-url='postgres://evilnis:Lon19ska83@localhost:5432/rust-workout-db'

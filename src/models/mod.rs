@@ -8,3 +8,4 @@ pub mod user_roles;
 pub mod users;
 pub mod workout;
 pub mod workout_plan;
+pub mod credentials;
