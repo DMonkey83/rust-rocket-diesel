@@ -3,7 +3,8 @@ use chrono::naive::NaiveDateTime;
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
-#[derive(Queryable, AsChangeset, Serialize, Deserialize)]
+#[derive(Queryable, AsChangeset, Serialize,  Debug, Deserialize)]
+#[diesel(table_name = users)]
 pub struct User {
     pub username: String,
     pub password_hash: String,

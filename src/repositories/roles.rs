@@ -2,9 +2,11 @@ use diesel::{ExpressionMethods, QueryDsl, QueryResult};
 use diesel_async::{AsyncPgConnection, RunQueryDsl};
 
 use crate::{
-    models::roles::{NewRole, Role},
-    schema::roles,
+    models::{roles::{NewRole, Role}, user_roles::UserRole, users::User},
+    schema::{roles, user_roles},
 };
+
+use super::users::UsersRepository;
 
 pub struct RoleRepository;
 
@@ -15,6 +17,21 @@ impl RoleRepository {
 
     pub async fn find_by_code(c: &mut AsyncPgConnection, code: String) -> QueryResult<Role> {
         roles::table.filter(roles::code.eq(code)).first(c).await
+    }
+
+    pub async fn find_by_ids(c: &mut AsyncPgConnection, ids: Vec<i64>) -> QueryResult<Vec<Role>> {
+        roles::table.filter(roles::id.eq_any(ids)).load(c).await
+    }
+
+    pub async fn find_by_user(c: &mut AsyncPgConnection, user: &User) -> QueryResult<Vec<Role>> {
+        let user = UsersRepository::find(c, &user.username).await?;
+        let user_roles = user_roles::table
+            .filter(user_roles::user_username.eq(user.username))
+            .get_results::<UserRole>(c)
+            .await?;
+        let role_ids: Vec<i64> = user_roles.iter().map(|ur: &UserRole| ur.role_id).collect();
+
+        Self::find_by_ids(c, role_ids).await
     }
 
     pub async fn create(c: &mut AsyncPgConnection, new_role: NewRole) -> QueryResult<Role> {

@@ -10,7 +10,7 @@ use crate::{
     DbConn,
 };
 
-use super::server_error;
+use super::{server_error, EditorUser};
 
 #[rocket::get("/workouts/<id>")]
 pub async fn get_workout(
@@ -39,7 +39,7 @@ pub async fn list_workouts(
 pub async fn create_workout(
     mut db: Connection<DbConn>,
     new_workout: Json<NewWorkout>,
-    _user: User,
+    _user: EditorUser,
 ) -> Result<Custom<Value>, Custom<Value>> {
     WorkoutRepository::create(&mut db, &new_workout.into_inner())
         .await
@@ -51,7 +51,7 @@ pub async fn create_workout(
 pub async fn update_workout(
     mut db: Connection<DbConn>,
     workout: Json<Workout>,
-    _user: User,
+    _user: EditorUser,
 ) -> Result<Custom<Value>, Custom<Value>> {
     WorkoutRepository::update(&mut db, workout.into_inner())
         .await
@@ -64,7 +64,7 @@ pub async fn delete_workout(
     mut db: Connection<DbConn>,
     id: i64,
 
-    _user: User,
+    _user: EditorUser,
 ) -> Result<Value, Custom<Value>> {
     WorkoutRepository::delete(&mut db, &id)
         .await

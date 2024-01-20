@@ -11,7 +11,7 @@ use rocket::response::status::Custom;
 use rocket::serde::json::{json, Json, Value};
 use rocket_db_pools::Connection;
 
-use super::server_error;
+use super::{server_error, EditorUser};
 
 #[rocket::get("/exercises")]
 pub async fn list_exercises(
@@ -40,7 +40,7 @@ pub async fn find_exercise(
 pub async fn create_exercise(
     mut db: Connection<DbConn>,
     new_exercise: Json<NewExercise>,
-    _user: User,
+    _user: EditorUser,
 ) -> Result<Custom<Value>, Custom<Value>> {
     ExerciseRepository::create(&mut db, new_exercise.into_inner())
         .await
@@ -52,7 +52,7 @@ pub async fn create_exercise(
 pub async fn update_exercise(
     mut db: Connection<DbConn>,
     exercise: Json<Exercise>,
-    _user: User,
+    _user: EditorUser,
 ) -> Result<Custom<Value>, Custom<Value>> {
     ExerciseRepository::update(&mut db, exercise.into_inner())
         .await
@@ -64,7 +64,7 @@ pub async fn update_exercise(
 pub async fn delete_exercise(
     mut db: Connection<DbConn>,
     exercise_name: &str,
-    _user: User,
+    _user: EditorUser,
 ) -> Result<Value, Custom<Value>> {
     ExerciseRepository::delete(&mut db, exercise_name)
         .await

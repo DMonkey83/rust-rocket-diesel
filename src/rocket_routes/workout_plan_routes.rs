@@ -9,7 +9,7 @@ use crate::{
     models::workout_plan::NewWorkoutPlan, repositories::workout_plan::WorkoutPlanRepository, DbConn,
 };
 
-use super::server_error;
+use super::{server_error, EditorUser};
 
 #[rocket::get("/workoutplans/<id>")]
 pub async fn get_workout_plan(
@@ -27,7 +27,7 @@ pub async fn get_workout_plan(
 pub async fn create_workout_plan(
     mut db: Connection<DbConn>,
     new_workout_plan: Json<NewWorkoutPlan>,
-    _user: User,
+    _user: EditorUser,
 ) -> Result<Custom<Value>, Custom<Value>> {
     WorkoutPlanRepository::create(&mut db, &new_workout_plan.into_inner())
         .await
@@ -39,7 +39,7 @@ pub async fn create_workout_plan(
 pub async fn update_workout_plan(
     mut db: Connection<DbConn>,
     workout_plan: Json<WorkoutPlan>,
-    _user: User,
+    _user: EditorUser,
 ) -> Result<Custom<Value>, Custom<Value>> {
     WorkoutPlanRepository::update(&mut db, workout_plan.into_inner())
         .await
@@ -51,7 +51,7 @@ pub async fn update_workout_plan(
 pub async fn delete_workout_plan(
     mut db: Connection<DbConn>,
     id: i64,
-    _user: User,
+    _user: EditorUser,
 ) -> Result<Custom<Value>, Custom<Value>> {
     WorkoutPlanRepository::delete(&mut db, &id)
         .await

@@ -2,10 +2,11 @@ use diesel::prelude::*;
 
 use crate::schema::user_roles;
 use serde::{Deserialize, Serialize};
+use super::roles::Role;
 
-#[derive(Queryable, Deserialize, Serialize)]
-#[diesel(belongs_to(User))]
+#[derive(Queryable, Deserialize, Associations, Serialize)]
 #[diesel(belongs_to(Role))]
+#[diesel(table_name = user_roles)]
 pub struct UserRole {
     pub id: i64,
     pub user_username: String,

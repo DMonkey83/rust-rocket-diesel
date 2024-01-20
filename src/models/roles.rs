@@ -4,19 +4,19 @@ use diesel::prelude::*;
 use crate::schema::roles;
 use serde::{Deserialize, Serialize};
 
-#[derive(Queryable, Deserialize, Serialize)]
+use super::enums_types::RoleCode;
+
+#[derive(Queryable,Debug, Deserialize, Serialize, Identifiable)]
 pub struct Role {
-    #[serde(skip_deserializing)]
     pub id: i64,
-    pub code: String,
+    pub code: RoleCode,
     pub name: String,
-    #[serde(skip_deserializing)]
     pub created_at: NaiveDateTime,
 }
 
 #[derive(Insertable, Deserialize)]
 #[diesel(table_name = roles)]
 pub struct NewRole {
-    pub code: String,
+    pub code: RoleCode,
     pub name: String,
 }

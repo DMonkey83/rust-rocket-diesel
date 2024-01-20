@@ -11,7 +11,7 @@ use rocket::response::status::Custom;
 use rocket::serde::json::{json, Json, Value};
 use rocket_db_pools::Connection;
 
-use super::server_error;
+use super::{server_error, EditorUser};
 
 #[rocket::get("/planworkouts?<plan_id>")]
 pub async fn list_plan_workouts_by_plan_id(
@@ -41,7 +41,7 @@ pub async fn get_plan_workout(
 pub async fn create_plan_workout(
     mut db: Connection<DbConn>,
     new_planworkout: Json<NewPlanWorkout>,
-    _user: User,
+    _user: EditorUser,
 ) -> Result<Custom<Value>, Custom<Value>> {
     PlanWorkoutRepository::create(&mut db, &new_planworkout.into_inner())
         .await
@@ -53,7 +53,7 @@ pub async fn create_plan_workout(
 pub async fn update_plan_workout(
     mut db: Connection<DbConn>,
     plan_workout: Json<PlanWorkout>,
-    _user: User,
+    _user: EditorUser,
 ) -> Result<Custom<Value>, Custom<Value>> {
     PlanWorkoutRepository::update(&mut db, plan_workout.into_inner())
         .await

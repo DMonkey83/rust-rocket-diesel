@@ -10,7 +10,7 @@ use crate::{
     DbConn,
 };
 
-use super::server_error;
+use super::{server_error, EditorUser};
 
 #[rocket::get("/musclegroups/<workout_id>")]
 pub async fn list_muscle_groups_by_workout_id(
@@ -28,7 +28,7 @@ pub async fn list_muscle_groups_by_workout_id(
 pub async fn create_muscle_group(
     mut db: Connection<DbConn>,
     new_muscle_group: Json<NewMuscleGroup>,
-    _user: User,
+    _user: EditorUser,
 ) -> Result<Custom<Value>, Custom<Value>> {
     MuscleGroupRepository::create(&mut db, new_muscle_group.into_inner())
         .await
@@ -40,7 +40,7 @@ pub async fn create_muscle_group(
 pub async fn update_muscle_gropu(
     mut db: Connection<DbConn>,
     muscle_group: Json<MuscleGroup>,
-    _user: User,
+    _user: EditorUser,
 ) -> Result<Custom<Value>, Custom<Value>> {
     MuscleGroupRepository::update(&mut db, muscle_group.into_inner())
         .await
@@ -52,7 +52,7 @@ pub async fn update_muscle_gropu(
 pub async fn delete_muscle_group(
     mut db: Connection<DbConn>,
     id: i64,
-    _user: User,
+    _user: EditorUser,
 ) -> Result<Value, Custom<Value>> {
     MuscleGroupRepository::delete(&mut db, &id)
         .await
